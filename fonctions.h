@@ -1,6 +1,16 @@
 #ifndef TI_202_PROJET_VECTOR_TEXT_BASED_EDITOR_FONCTIONS_H
 #define TI_202_PROJET_VECTOR_TEXT_BASED_EDITOR_FONCTIONS_H
 
+// Enums
+typedef enum {
+    POINT,
+    LINE,
+    SQUARE,
+    RECTANGLE,
+    CIRCLE,
+    POLYGON
+}SHAPE_TYPE;
+
 // Structures
 typedef struct {
     int pos_x;
@@ -33,6 +43,12 @@ typedef struct {
     Point **points;
 }Polygon;
 
+typedef struct {
+    int id;
+    SHAPE_TYPE shapeType;
+    void *ptrShape;
+}Shape;
+
 // Points
 Point *create_point(int px, int py);
 void delete_point(Point *point);
@@ -62,5 +78,16 @@ void print_circle(Circle * circle);
 Polygon *create_polygon(int n, Point **points);
 void delete_polygon(Polygon * polygon);
 void print_polygon(Polygon * polygon);
+
+// Shapes
+Shape *create_empty_shape(SHAPE_TYPE shape_type);
+Shape *create_point_shape(int px, int py);
+Shape *create_line_shape(int px1, int py1, int px2, int py2);
+Shape *create_square_shape(int px, int py, int length);
+Shape *create_rectangle_shape(int px, int py, int width, int height);
+Shape *create_circle_shape(int px, int py, int radius);
+Shape *create_polygon_shape(int lst[], int n);
+void delete_shape(Shape * shape);
+void print_shape(Shape * shape);
 
 #endif
