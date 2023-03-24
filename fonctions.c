@@ -6,13 +6,12 @@
 
 Point* create_point(int px, int py) {
 
-    Point point;
-    Point *_point = &point;
+    Point *point = malloc(sizeof(Point));
 
-    (_point) -> pos_x = px;
-    (_point) -> pos_y = py;
+    point -> pos_x = px;
+    point -> pos_y = py;
 
-    return _point;
+    return point;
 }
 
 void delete_point(Point* point) {
@@ -20,20 +19,19 @@ void delete_point(Point* point) {
 }
 
 void print_point(Point* point) {
-    printf("POINT %d %d \n", (*point).pos_x, (*point).pos_y);
+    printf("POINT %d %d \n", point->pos_x, point->pos_y);
 }
 
 /********************************* LINE ******************************/
 
 Line *create_line(Point *point1, Point *point2) {
 
-    Line line;
-    Line *_line = &line;
+    Line *line = malloc(sizeof(Line));
 
-    (_line) -> p1 = point1;
-    (_line) -> p2 = point2;
+    line -> p1 = point1;
+    line -> p2 = point2;
 
-    return _line;
+    return line;
 }
 
 void delete_line(Line *line) {
@@ -41,5 +39,44 @@ void delete_line(Line *line) {
 }
 
 void print_line(Line *line) {
-    printf("LINE %d %d %d %d \n", (*line).p1->pos_x, (*line).p1->pos_y, (*line).p2->pos_x, (*line).p2->pos_y);
+    printf("LINE %d %d %d %d \n", line->p1->pos_x, line->p1->pos_y, line->p2->pos_x, line->p2->pos_y);
+}
+
+/********************************* SQUARE ******************************/
+Square *create_square(Point *point, int length) {
+
+    Square *square = malloc(sizeof(Square));
+
+    square->point = point;
+    square->length = length;
+
+    return square;
+}
+
+void delete_square(Square *square) {
+    free(square);
+}
+
+void print_square(Square *square) {
+    printf("SQUARE %d %d %d", square->point->pos_x, square->point->pos_y, square->length);
+}
+
+/********************************* RECTANGLE ******************************/
+Rectangle *create_rectangle(Point *point, int width, int height) {
+
+    Rectangle *rectangle = malloc(sizeof(Rectangle));
+
+    rectangle->point = point;
+    rectangle->height = height;
+    rectangle->width = width;
+
+    return rectangle;
+}
+
+void delete_rectangle(Rectangle *rectangle) {
+    free(rectangle);
+}
+
+void print_rectangle(Rectangle *rectangle) {
+    printf("RECTANGLE %d %d %d &d", rectangle->point->pos_x, rectangle->point->pos_y, rectangle->width, rectangle->height);
 }
