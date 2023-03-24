@@ -48,8 +48,8 @@ Square *create_square(Point *point, int length) {
 
     Square *square = malloc(sizeof(Square));
 
-    square->point = point;
-    square->length = length;
+    square -> point = point;
+    square -> length = length;
 
     return square;
 }
@@ -68,9 +68,9 @@ Rectangle *create_rectangle(Point *point, int width, int height) {
 
     Rectangle *rectangle = malloc(sizeof(Rectangle));
 
-    rectangle->point = point;
-    rectangle->height = height;
-    rectangle->width = width;
+    rectangle -> point = point;
+    rectangle -> height = height;
+    rectangle -> width = width;
 
     return rectangle;
 }
@@ -89,8 +89,8 @@ Circle *create_circle(Point *center, int radius) {
 
     Circle *circle = malloc(sizeof(Circle));
 
-    circle->center = center;
-    circle->radius = radius;
+    circle -> center = center;
+    circle -> radius = radius;
 
     return circle;
 }
@@ -104,3 +104,32 @@ void print_circle(Circle *circle) {
 }
 
 /********************************* POLYGON ******************************/
+
+Polygon *create_polygon(int n, Point **points) {
+
+    Polygon *polygon = malloc(sizeof(Polygon));
+    Point **pointsTab = malloc(n * sizeof(Point));
+
+    int i;
+    for(i = 0; i < n; i++) {
+        pointsTab[i] = points[i];
+    }
+
+    polygon -> n = n;
+    polygon -> points = pointsTab;
+
+}
+
+void delete_polygon(Polygon *polygon) {
+    free(polygon);
+}
+
+void print_polygon(Polygon *polygon) {
+
+    printf("POLYGON ");
+
+    int i;
+    for(i = 0; i < polygon->n; i++) {
+        printf("%d %d \n", polygon->points[i]->pos_y, polygon->points[i]->pos_x);
+    }
+}
