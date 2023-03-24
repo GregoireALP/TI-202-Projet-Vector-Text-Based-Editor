@@ -6,9 +6,17 @@ typedef struct {
     int pos_y;
 }Point;
 
+typedef struct {
+    Point *p1;
+    Point *p2;
+}Line;
+
 Point *create_point(int px, int py);
 void delete_point(Point *point);
 void print_point(Point *point);
 
+Line *create_line(Point *point1, Point *point2);
+void delete_line(Line *line);
+void print_line(Line *line);
 
 #endif
