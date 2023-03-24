@@ -43,6 +43,7 @@ void print_line(Line *line) {
 }
 
 /********************************* SQUARE ******************************/
+
 Square *create_square(Point *point, int length) {
 
     Square *square = malloc(sizeof(Square));
@@ -62,6 +63,7 @@ void print_square(Square *square) {
 }
 
 /********************************* RECTANGLE ******************************/
+
 Rectangle *create_rectangle(Point *point, int width, int height) {
 
     Rectangle *rectangle = malloc(sizeof(Rectangle));
@@ -78,5 +80,27 @@ void delete_rectangle(Rectangle *rectangle) {
 }
 
 void print_rectangle(Rectangle *rectangle) {
-    printf("RECTANGLE %d %d %d &d", rectangle->point->pos_x, rectangle->point->pos_y, rectangle->width, rectangle->height);
+    printf("RECTANGLE %d %d %d %d", rectangle->point->pos_x, rectangle->point->pos_y, rectangle->width, rectangle->height);
 }
+
+/********************************* CIRCLE ******************************/
+
+Circle *create_circle(Point *center, int radius) {
+
+    Circle *circle = malloc(sizeof(Circle));
+
+    circle->center = center;
+    circle->radius = radius;
+
+    return circle;
+}
+
+void delete_circle(Circle *circle) {
+    free(circle);
+}
+
+void print_circle(Circle *circle) {
+    printf("CIRCLE %d %d %d", circle->center->pos_x, circle->center->pos_y, circle->radius);
+}
+
+/********************************* POLYGON ******************************/

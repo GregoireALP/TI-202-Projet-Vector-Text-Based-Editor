@@ -23,6 +23,16 @@ typedef struct {
     int height;
 }Rectangle;
 
+typedef struct {
+    Point *center;
+    int radius;
+}Circle;
+
+typedef struct {
+    int n;
+    Point **points;
+}Polygon;
+
 // Points
 Point *create_point(int px, int py);
 void delete_point(Point *point);
@@ -42,5 +52,15 @@ void print_square(Square *square);
 Rectangle *create_rectangle(Point *point, int width, int height);
 void delete_rectangle(Rectangle *rectangle);
 void print_rectangle(Rectangle *rectangle);
+
+// Circles
+Circle *create_circle(Point * center, int radius);
+void delete_circle(Circle * circle);
+void print_circle(Circle * circle);
+
+// Polygons
+Polygon *create_polygon(int n, Point **points);
+void delete_polygon(Polygon * polygon);
+void print_polygon(Polygon * polygon);
 
 #endif
