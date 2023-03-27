@@ -133,3 +133,139 @@ void print_polygon(Polygon *polygon) {
         printf("%d %d \n", polygon->points[i]->pos_y, polygon->points[i]->pos_x);
     }
 }
+
+/********************************* SHAPE ******************************/
+
+Shape* create_empty_shape(SHAPE_TYPE shape_type) {
+
+    Shape *shape = (Shape *) malloc(sizeof(Shape));
+
+    shape -> ptrShape = NULL;
+    shape -> id = get_next_id();
+    shape -> shapeType = shape_type;
+
+    return shape;
+}
+
+Shape *create_point_shape(int px, int py) {
+
+    Shape *shape = create_empty_shape(POINT);
+    Point *point = create_point(px, py);
+
+    shape -> ptrShape = point;
+
+    return shape;
+}
+
+Shape *create_line_shape(int px1, int py1, int px2, int py2) {
+
+    Shape *shape = create_empty_shape(LINE);
+
+    Point *point1 = create_point(px1, py1);
+    Point *point2 = create_point(px2, py2);
+
+    Line *line = create_line(point1, point2);
+
+    shape -> ptrShape = line;
+
+    return shape;
+}
+
+Shape *create_square_shape(int px, int py, int length) {
+
+    Shape *shape = create_empty_shape(SQUARE);
+
+    Point *point = create_point(px, py);
+
+    Square *square = create_square(point, length);
+
+    shape -> ptrShape = square;
+
+    return shape;
+}
+
+Shape *create_rectangle_shape(int px, int py, int width, int height) {
+
+    Shape *shape = create_empty_shape(RECTANGLE);
+
+    Point *point = create_point(px, py);
+
+    Rectangle *rectangle = create_rectangle(point, width, height);
+
+    shape -> ptrShape = rectangle;
+
+    return shape;
+}
+
+Shape *create_cercle_shape(int px, int py, int radius) {
+
+    Shape *shape = create_empty_shape(CIRCLE);
+
+    Point *point = create_point(px, py);
+
+    Circle *circle = create_circle(point, radius);
+
+    shape -> ptrShape = circle;
+
+    return shape;
+}
+
+Shape *create_polygon_shape(int lst[], int n) {
+
+    Shape *shape = create_empty_shape(POLYGON);
+
+    Point **points = malloc(n * sizeof(n));
+
+    int i;
+    for(i = 0; i < n; i+=2) {
+        points[i] = create_point(lst[i], lst[i + 1]);
+    }
+
+    if(n % 2 == 0) {
+        Polygon  *polygon = create_polygon(n , points);
+
+        shape -> ptrShape = polygon;
+    }
+    return shape;
+
+}
+
+void delete_shape(Shape *shape) {
+    free(shape);
+}
+
+void print_shape(Shape *shape) {
+
+    switch(shape->shapeType) {
+
+        case POINT:
+            print_point((Point *) shape->ptrShape);
+            break;
+        case LINE:
+            print_line((Line *) shape->ptrShape);
+            break;
+        case SQUARE:
+            print_square((Square *) shape->ptrShape);
+            break;
+        case RECTANGLE:
+            print_rectangle((Rectangle *) shape->ptrShape);
+            break;
+        case CIRCLE:
+            print_circle((Circle *) shape->ptrShape);
+            break;
+        case POLYGON:
+            print_polygon((Polygon *) shape->ptrShape);
+            break;
+        default:
+            printf("UNKNOWN \n");
+            break;
+    }
+
+}
+
+/********************************* ID ******************************/
+
+unsigned int global_id = 0;
+unsigned int get_next_id() {
+    return ++global_id;
+}

@@ -44,10 +44,13 @@ typedef struct {
 }Polygon;
 
 typedef struct {
-    int id;
+    unsigned int id;
     SHAPE_TYPE shapeType;
     void *ptrShape;
 }Shape;
+
+// Id
+unsigned int get_next_id();
 
 // Points
 Point *create_point(int px, int py);
