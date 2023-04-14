@@ -118,6 +118,7 @@ Polygon *create_polygon(int n, Point **points) {
     polygon -> n = n;
     polygon -> points = pointsTab;
 
+    return polygon;
 }
 
 void delete_polygon(Polygon *polygon) {
