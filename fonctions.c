@@ -211,7 +211,7 @@ Shape *create_cercle_shape(int px, int py, int radius) {
     return shape;
 }
 
-Shape *create_polygon_shape(int lst[], int n) {
+Shape *create_polygon_shape(int lst[], int n) { // il faudrait avoir (int n, Point ** tab)
 
     Shape *shape = create_empty_shape(POLYGON);
 
