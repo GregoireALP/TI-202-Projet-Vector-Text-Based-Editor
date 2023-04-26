@@ -14,8 +14,14 @@ struct area {
     Shape* shape[SHAPE_MAX];
     int nb_shape;
 };
-
 typedef struct area Area;
+
+struct pixel {
+    int px;
+    int py;
+};
+
+typedef struct pixel Pixel;
 
 Area* create_area(unsigned int width, unsigned int height);
 void add_shape_to_area(Area* area, Shape* shape);
@@ -24,6 +30,11 @@ void erase_area(Area* area);
 void delete_area(Area* area);
 void draw_area(Area* area);
 void print_area(Area* area);
+
+Pixel *create_pixel(int px, int py);
+void delete_pixel(Pixel *pixel);
+
+void pixel_point(Point* shape, Pixel** pixel, int* nb_pixels);
 
 
 #endif //TI_202_PROJET_VECTOR_TEXT_BASED_EDITOR_AREA_H
