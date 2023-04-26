@@ -33,7 +33,6 @@ void print_area(Area* area);
 
 Pixel *create_pixel(int px, int py);
 void delete_pixel(Pixel *pixel);
-
 void pixel_point(Point* shape, Pixel** pixel, int* nb_pixels);
 
 

@@ -67,8 +67,8 @@ void delete_pixel(Pixel *pixel) {
     free(pixel);
 }
 
-void pixel_point(Shape *shape, Pixel** pixel, int *nb_pixels) {
-
+void pixel_point(Point* shape, Pixel** pixel, int* nb_pixels) {
+    
     Point *pt = (Point*) shape -> ptrShape;
     Pixel** pixel_tab = (Pixel**) malloc((sizeof(Pixel**)));
     pixel_tab[0] = create_pixel(pt->pos_x, pt->pos_y);
