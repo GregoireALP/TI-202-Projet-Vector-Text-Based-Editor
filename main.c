@@ -4,8 +4,14 @@
 
 int main() {
 
-    Area *area = create_area(10, 10);
-    print_area(area);
+    int nb_pixels = 0;
+
+    Point *start = create_point(0, 0);
+    Point *end = create_point(5, 5);
+    Line *line = create_line(start, end);
+
+
+
 
     return 0;
 }

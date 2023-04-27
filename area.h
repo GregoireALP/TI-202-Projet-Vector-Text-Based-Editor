@@ -34,6 +34,7 @@ void print_area(Area* area);
 Pixel *create_pixel(int px, int py);
 void delete_pixel(Pixel *pixel);
 void pixel_point(Point* shape, Pixel** pixel, int* nb_pixels);
+void pixel_line(Line* line, Pixel** pixel, int* nb_pixels);
 
 
 #endif //TI_202_PROJET_VECTOR_TEXT_BASED_EDITOR_AREA_H
