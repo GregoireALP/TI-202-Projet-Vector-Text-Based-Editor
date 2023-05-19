@@ -257,6 +257,10 @@ void pixel_line(Shape* shape, Pixel ***pixel_tab, int *nb_pixels) {
     }
 }
 
+void pixel_circle(Shape* shape, Pixel*** pixel_tab, int *nb_pixels) {
+    
+}
+
 Pixel** create_shape_to_pixel(Shape* shape, int *nb_pixel) {
 
     Pixel** pixel;

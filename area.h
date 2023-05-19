@@ -35,6 +35,7 @@ Pixel *create_pixel(int px, int py);
 void delete_pixel(Pixel *pixel);
 void pixel_point(Shape* shape, Pixel*** pixel, int* nb_pixels);
 void pixel_line(Shape *shape, Pixel ***pixel_tab, int *nb_pixels);
+void pixel_circle(Shape* shape, Pixel*** pixel_tab, int *nb_pixels);
 void pixel_forme(Shape* shape, Pixel*** pixel_tab, int* nb_pixels);
 Pixel** create_shape_to_pixel(Shape* shape, int *nb_pixel);
 
