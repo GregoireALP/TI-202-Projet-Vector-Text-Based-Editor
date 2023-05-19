@@ -48,12 +48,35 @@ void print_area(Area* area) {
     int i, y;
     for(i = 0; i < area->height; i++) {
         for (y = 0; y < area->width; ++y) {
-            printf(" %d ", area->mat[i][y]);
+            if(area->mat[i][y] == 0) {
+                printf(" .");
+            } else {
+                printf(" #");
+            }
         }
         printf("\n");
     }
 }
 
+void draw_area(Area *area) {
+    for (int i = 0; i < area->nb_shape; i++) {
+        Shape *shape = area->shape[i];
+        int nb_pixel;
+        Pixel **pixels = create_shape_to_pixel(shape, &nb_pixel);
+
+        // matrice avec les pixels de la forme
+        for (int j = 0; j < nb_pixel; j++) {
+            int x = pixels[j]->px;
+            int y = pixels[j]->py;
+            if (x >= 0 && x < area->width && y >= 0 && y < area->height) {
+                area->mat[x][y] = 1;
+            }
+        }
+        free(pixels);
+    }
+}
+
+/**************************************************************/
 Pixel *create_pixel(int px, int py) {
 
     Pixel *pixel = malloc(sizeof(Pixel));
@@ -68,54 +91,191 @@ void delete_pixel(Pixel *pixel) {
     free(pixel);
 }
 
-void pixel_point(Point* shape, Pixel** pixel, int* nb_pixels) {
-    
-    Point *pt = (Point*) shape;
-    pixel = (Pixel**) malloc((sizeof(Pixel**)));
-    pixel[0] = create_pixel(pt->pos_x, pt->pos_y);
+void pixel_point(Shape* shape, Pixel*** pixel_tab, int* nb_pixels)
+{
+    Point* pt = (Point*) shape->ptrShape;
+    *pixel_tab = (Pixel**) malloc (sizeof (Pixel*));
+    *pixel_tab[0] = create_pixel(pt->pos_x, pt->pos_y);
     *nb_pixels = 1;
 }
 
-void pixel_line(Line* line, Pixel** pixel, int* nb_pixels) {
+void pixel_line(Shape* shape, Pixel ***pixel_tab, int *nb_pixels) {
+    Line *pt = (Line *)shape->ptrShape;
 
-    int xa, xb, ya, yb;
-    xa = line->p1->pos_x;
-    ya = line->p1->pos_y;
-    xb = line->p2->pos_x;
-    yb = line->p2->pos_y;
+    int xA = pt->p1->pos_x, yA = pt->p1->pos_y;
+    int xB = pt->p2->pos_x, yB = pt->p2->pos_y;
 
-    int dx = xb - xa;
-    int dy = yb - ya;
+    if (xA < xB) { // on trace vers la droite
+        int dx = xB - xA;
+        int dy = yB - yA;
+        int dmin = min(dx, abs(dy));
+        int dmax = max(dx, abs(dy));
 
-    int dmin = min(dx, abs(dy));
-    int dmax = max(dx, abs(dy));
+        Pixel **tmp_tab = (Pixel **)malloc((dmax + 1) * sizeof(Pixel *));
 
-    int nb_segs = dmin + 1;
+        int nb_segs = dmin + 1;
+        int taille_segment = (dmax + 1) / (dmin + 1);
+        int restants = (dmax + 1) % (dmin + 1);
 
-    int segs_length = (dmax + 1) / (dmin + 1);
-    int overflow = (dmax + 1 ) % (dmin + 1);
-
-    int* segements = (int*) malloc(nb_segs * sizeof(int));
-    for(int i = 0; i < nb_segs; i++) {
-        segements[i] = segs_length;
-    }
-
-    int* cumuls = (int*) malloc(nb_segs * sizeof(int));
-    cumuls[0] = 0;
-    for(int y = 0; y < nb_segs; y++) {
-        cumuls[y] = ((y * overflow) % (nb_segs) < ((y - 1) * overflow) % nb_segs);
-        segements[y] = segements[y] + cumuls[y];
-        printf("%d", segements[y]);
-    }
-
-    // Tracage des segements
-    pixel = (Pixel**) malloc(((nb_segs * segs_length) + overflow) * sizeof(Pixel*));
-    int x = 0;
-    int y = 0;
-    for(int i = 0; i < nb_segs; i++) {
-        for(int j = 0; segements[i]; j++) {
-
+        int segments[nb_segs];
+        for (int i = 0; i < nb_segs; i++) {
+            segments[i] = taille_segment;
         }
+
+        int *cumuls = (int *)malloc(nb_segs * sizeof(int));
+        cumuls[0] = 0;
+
+        for (int i = 2; i < nb_segs + 1; i++) {
+            cumuls[i - 1] = ((i * restants) % (dmin + 1) < ((i - 1) * restants) % (dmin + 1));
+        }
+
+        for (int i = 0; i < nb_segs; i++) {
+            segments[i] += cumuls[i];
+        }
+
+        if (dy < 0) {         // on trace vers le bas
+            if (dx > abs(dy)) { // les segments sont horizontaux
+                int tmpx = xA, tmpy = yA;
+                for (int i = 0; i < nb_segs; i++) {
+                    for (int j = 0; j < segments[i]; j++) {
+                        tmp_tab[*nb_pixels] = create_pixel(tmpx, tmpy);
+                        (*nb_pixels)++;
+                        tmpx++;
+                    }
+                    tmpy--;
+                }
+            } else { // les segments sont verticaux
+                int tmpx = xA, tmpy = yA;
+                for (int i = 0; i < nb_segs; i++) {
+                    for (int j = 0; j < segments[i]; j++) {
+                        tmp_tab[*nb_pixels] = create_pixel(tmpx, tmpy);
+                        (*nb_pixels)++;
+                        tmpy--;
+                    }
+                    tmpx++;
+                }
+            }
+        } else {         // on trace vers le haut
+            if (dx > dy) { // les segments sont horizontaux
+                int tmpx = xA, tmpy = yA;
+                for (int i = 0; i < nb_segs; i++) {
+                    for (int j = 0; j < segments[i]; j++) {
+                        tmp_tab[*nb_pixels] = create_pixel(tmpx, tmpy);
+                        (*nb_pixels)++;
+                        tmpx++;
+                    }
+                    tmpy++;
+                }
+            } else { // les segments sont verticaux
+                int tmpx = xA, tmpy = yA;
+                for (int i = 0; i < nb_segs; i++) {
+                    for (int j = 0; j < segments[i]; j++) {
+                        tmp_tab[*nb_pixels] = create_pixel(tmpx, tmpy);
+                        (*nb_pixels)++;
+                        tmpy++;
+                    }
+                    tmpx++;
+                }
+            }
+        }
+        *pixel_tab = tmp_tab;
+    } else { // on trace vers ma gauche
+        int dx = xA - xB;
+        int dy = yA - yB;
+        int dmin = min(dx, abs(dy));
+        int dmax = max(dx, abs(dy));
+
+        Pixel **tmp_tab = (Pixel **)malloc((dmax + 1) * sizeof(Pixel *));
+
+        int nb_segs = dmin + 1;
+        int taille_segment = (dmax + 1) / (dmin + 1);
+        int restants = (dmax + 1) % (dmin + 1);
+
+        int segments[nb_segs];
+        for (int i = 0; i < nb_segs; i++) {
+            segments[i] = taille_segment;
+        }
+
+        int *cumuls = (int *)malloc(nb_segs * sizeof(int));
+        cumuls[0] = 0;
+
+        for (int i = 2; i < nb_segs + 1; i++) {
+            cumuls[i - 1] =
+                    ((i * restants) % (dmin + 1) < ((i - 1) * restants) % (dmin + 1));
+        }
+
+        for (int i = 0; i < nb_segs; i++) {
+            segments[i] = segments[i] + cumuls[i];
+        }
+
+        if (dy < 0) {         // on trace vers le bas
+            if (dx > abs(dy)) { // les segments sont horizontaux
+                int tmpx = xB, tmpy = yB;
+                for (int i = 0; i < nb_segs; i++) {
+                    for (int j = 0; j < segments[i]; j++) {
+                        tmp_tab[*nb_pixels] = create_pixel(tmpx, tmpy);
+                        (*nb_pixels)++;
+                        tmpx++;
+                    }
+                    tmpy--;
+                }
+            } else { // les segments sont verticaux
+                int tmpx = xB, tmpy = yB;
+                for (int i = 0; i < nb_segs; i++) {
+                    for (int j = 0; j < segments[i]; j++) {
+                        tmp_tab[*nb_pixels] = create_pixel(tmpx, tmpy);
+                        (*nb_pixels)++;
+                        tmpy--;
+                    }
+                    tmpx++;
+                }
+            }
+        } else {         // on trace vers le haut
+            if (dx > dy) { // les segments sont horizontaux
+                int tmpx = xB, tmpy = yB;
+                for (int i = 0; i < nb_segs; i++) {
+                    for (int j = 0; j < segments[i]; j++) {
+                        tmp_tab[*nb_pixels] = create_pixel(tmpx, tmpy);
+                        (*nb_pixels)++;
+                        tmpx++;
+                    }
+                    tmpy++;
+                }
+            } else { // les segments sont verticaux
+                int tmpx = xB, tmpy = yB;
+                for (int i = 0; i < nb_segs; i++) {
+                    for (int j = 0; j < segments[i]; j++) {
+                        tmp_tab[*nb_pixels] = create_pixel(tmpx, tmpy);
+                        (*nb_pixels)++;
+                        tmpy++;
+                    }
+                    tmpx++;
+                }
+            }
+        }
+        *pixel_tab = tmp_tab;
+    }
+}
+
+Pixel** create_shape_to_pixel(Shape* shape, int *nb_pixel) {
+
+    Pixel** pixel;
+
+    switch (shape->shapeType) {
+        case LINE:
+            pixel_line(shape, &pixel, nb_pixel);
+            break;
+        case POINT:
+            break;
+        case SQUARE:
+            break;
+        case RECTANGLE:
+            break;
+        case CIRCLE:
+            break;
+        case POLYGON:
+            break;
     }
 
+    return pixel;
 }
