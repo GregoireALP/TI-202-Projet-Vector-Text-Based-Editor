@@ -199,7 +199,7 @@ Shape *create_rectangle_shape(int px, int py, int width, int height) {
     return shape;
 }
 
-Shape *create_cercle_shape(int px, int py, int radius) {
+Shape *create_circle_shape(int px, int py, int radius) {
 
     Shape *shape = create_empty_shape(CIRCLE);
 

@@ -61,7 +61,7 @@ void print_area(Area* area) {
 void draw_area(Area *area) {
     for (int i = 0; i < area->nb_shape; i++) {
         Shape *shape = area->shape[i];
-        int nb_pixel;
+        int nb_pixel = 0;
         Pixel **pixels = create_shape_to_pixel(shape, &nb_pixel);
 
         // matrice avec les pixels de la forme
@@ -257,94 +257,134 @@ void pixel_line(Shape* shape, Pixel ***pixel_tab, int *nb_pixels) {
     }
 }
 
-void pixel_circle(Shape* shape, Pixel*** pixel_tab, int *nb_pixels) {}
+void pixel_square(Shape* shape, Pixel*** pixel_tab, int* nb_pixels) {
+    Square* square = (Square*)shape->ptrShape;
+    int x = square->point->pos_x;
+    int y = square->point->pos_y;
+    int side_length = square->length;
 
-void pixel_square(Shape* square, Pixel*** pixel_tab, int* nb_pixels) {
+    *pixel_tab = (Pixel**)malloc(side_length * side_length * sizeof(Pixel*));
 
-    Square *sq = (Square *) square->ptrShape;
-    *nb_pixels = 0;
+    int index = 0;
+    // Top side
+    for (int i = 0; i < side_length; i++) {
+        Pixel* px = create_pixel(x + i, y);
+        (*pixel_tab)[index++] = px;
+        (*nb_pixels)++;
+    }
 
-    int length = sq->length;
-    Point *pt = sq->point;
-    int px = pt->pos_x;
-    int py = pt->pos_y;
+    // Right side
+    for (int i = 1; i < side_length - 1; i++) {
+        Pixel* px = create_pixel(x + side_length - 1, y + i);
+        (*pixel_tab)[index++] = px;
+        (*nb_pixels)++;
+    }
 
+    // Bottom side
+    for (int i = 0; i < side_length; i++) {
+        Pixel* px = create_pixel(x + i, y + side_length - 1);
+        (*pixel_tab)[index++] = px;
+        (*nb_pixels)++;
+    }
 
-    Shape *line1 = create_line_shape(px, py, px, py + length);
-    Pixel **line1Pixels = NULL;
-    pixel_line(line1, &line1Pixels, nb_pixels);
-
-    Shape *line2 = create_line_shape(px, py + length, px + length, py + length);
-    Pixel **line2Pixels = NULL;
-    pixel_line(line2, &line2Pixels, nb_pixels);
-
-
-    Shape *line3 = create_line_shape(px + length, py + length, px + length, py);
-    Pixel **line3Pixels = NULL;
-    pixel_line(line3, &line3Pixels, nb_pixels);
-
-    Shape *line4 = create_line_shape(px + length, py, px, py);
-    Pixel **line4Pixels = NULL;
-    pixel_line(line4, &line4Pixels, nb_pixels);
-
-    line1Pixels = realloc(line1Pixels, *nb_pixels * sizeof(Pixel *));
+    // Left side
+    for (int i = 1; i < side_length - 1; i++) {
+        Pixel* px = create_pixel(x, y + i);
+        (*pixel_tab)[index++] = px;
+        (*nb_pixels)++;
+    }
 }
 
-void pixel_circle(Shape* shape, Pixel*** pixel_tab, int *nb_pixels) {
-    Circle *circle = (Circle *) shape -> ptrShape ;
+void pixel_circle(Shape* shape, Pixel*** pixel_tab, int* nb_pixels) {
+    Circle* circle = (Circle*)shape->ptrShape;
     int x = 0;
     int y = circle->radius;
-    int d = circle->radius - 1;
-    Pixel *px = NULL;
+    int d = 3 - 2 * circle->radius;
+    Pixel* px = NULL;
 
-    while (y >= x) {
-        // Ajouter le point pour le premier octant
+    *pixel_tab = (Pixel**)malloc(8 * circle->radius * sizeof(Pixel*));
+
+    while (x <= y) {
+        // Add pixels for the eight octants
+
+        // Octant 1
         px = create_pixel(circle->center->pos_x + x, circle->center->pos_y + y);
-        pixel_tab[(*nb_pixels)++] = px;
+        (*pixel_tab)[(*nb_pixels)++] = px;
 
-        // Ajouter le point pour l'octant d'en face
+        // Octant 2
         px = create_pixel(circle->center->pos_x + y, circle->center->pos_y + x);
-        pixel_tab[(*nb_pixels)++] = px;
+        (*pixel_tab)[(*nb_pixels)++] = px;
 
-        // Ajouter la même chose pour les six octants restants
-
-        // Ajouter le point pour le second octant
+        // Octant 3
         px = create_pixel(circle->center->pos_x - x, circle->center->pos_y + y);
-        pixel_tab[(*nb_pixels)++] = px;
+        (*pixel_tab)[(*nb_pixels)++] = px;
 
-        // Ajouter le point pour l'octant d'en face
+        // Octant 4
         px = create_pixel(circle->center->pos_x - y, circle->center->pos_y + x);
-        pixel_tab[(*nb_pixels)++] = px;
+        (*pixel_tab)[(*nb_pixels)++] = px;
 
-        // Ajouter le point pour le troisième octant
+        // Octant 5
         px = create_pixel(circle->center->pos_x + x, circle->center->pos_y - y);
-        pixel_tab[(*nb_pixels)++] = px;
+        (*pixel_tab)[(*nb_pixels)++] = px;
 
-        // Ajouter le point pour l'octant d'en face
+        // Octant 6
         px = create_pixel(circle->center->pos_x + y, circle->center->pos_y - x);
-        pixel_tab[(*nb_pixels)++] = px;
+        (*pixel_tab)[(*nb_pixels)++] = px;
 
-        // Ajouter le point pour le dernier octant
+        // Octant 7
         px = create_pixel(circle->center->pos_x - x, circle->center->pos_y - y);
-        pixel_tab[(*nb_pixels)++] = px;
+        (*pixel_tab)[(*nb_pixels)++] = px;
 
-        // Ajouter le point pour l'octant d'en face
+        // Octant 8
         px = create_pixel(circle->center->pos_x - y, circle->center->pos_y - x);
-        pixel_tab[(*nb_pixels)++] = px;
+        (*pixel_tab)[(*nb_pixels)++] = px;
 
-        if (d >= 2 * x) {
-            d -= 2 * x + 1;
-            x++;
-        }
-        else if (d < 2 * (circle->radius - y)) {
-            d += 2 * y - 1;
+        if (d < 0) {
+            d += 4 * x + 6;
+        } else {
+            d += 4 * (x - y) + 10;
             y--;
         }
-        else {
-            d += 2 * (y - x - 1);
-            y--;
-            x++;
-        }
+        x++;
+    }
+}
+
+void pixel_rectangle(Shape* shape, Pixel*** pixel_tab, int* nb_pixels) {
+    Rectangle* rectangle = (Rectangle*)shape->ptrShape;
+    int x = rectangle->point->pos_x;
+    int y = rectangle->point->pos_y;
+    int width = rectangle->width;
+    int height = rectangle->height;
+
+    *pixel_tab = (Pixel**)malloc((2 * width + 2 * height - 4) * sizeof(Pixel*));
+
+    int index = 0;
+    // Top side
+    for (int i = 0; i < width; i++) {
+        Pixel* px = create_pixel(x + i, y);
+        (*pixel_tab)[index++] = px;
+        (*nb_pixels)++;
+    }
+
+    // Right side
+    for (int i = 1; i < height - 1; i++) {
+        Pixel* px = create_pixel(x + width - 1, y + i);
+        (*pixel_tab)[index++] = px;
+        (*nb_pixels)++;
+    }
+
+    // Bottom side
+    for (int i = width - 1; i >= 0; i--) {
+        Pixel* px = create_pixel(x + i, y + height - 1);
+        (*pixel_tab)[index++] = px;
+        (*nb_pixels)++;
+    }
+
+    // Left side
+    for (int i = height - 2; i > 0; i--) {
+        Pixel* px = create_pixel(x, y + i);
+        (*pixel_tab)[index++] = px;
+        (*nb_pixels)++;
     }
 }
 
@@ -357,10 +397,13 @@ Pixel** create_shape_to_pixel(Shape* shape, int *nb_pixel) {
             pixel_line(shape, &pixel, nb_pixel);
             break;
         case POINT:
+            pixel_point(shape, &pixel, nb_pixel);
             break;
         case SQUARE:
+            pixel_square(shape, &pixel, nb_pixel);
             break;
         case RECTANGLE:
+            pixel_rectangle(shape, &pixel, nb_pixel);
             break;
         case CIRCLE:
             pixel_circle(shape, &pixel, nb_pixel);
