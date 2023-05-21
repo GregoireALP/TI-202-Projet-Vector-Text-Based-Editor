@@ -49,9 +49,9 @@ void print_area(Area* area) {
     for(i = 0; i < area->height; i++) {
         for (y = 0; y < area->width; ++y) {
             if(area->mat[i][y] == 0) {
-                printf(" .");
+                printf(" . ");
             } else {
-                printf(" #");
+                printf(" # ");
             }
         }
         printf("\n");
@@ -257,13 +257,43 @@ void pixel_line(Shape* shape, Pixel ***pixel_tab, int *nb_pixels) {
     }
 }
 
-void pixel_circle(Shape* shape, Pixel*** pixel_tab, int *nb_pixels) {
-    
+void pixel_circle(Shape* shape, Pixel*** pixel_tab, int *nb_pixels) {}
+
+void pixel_square(Shape* square, Pixel*** pixel_tab, int* nb_pixels) {
+
+    Square* sq = (Square*) square->ptrShape;
+    *nb_pixels = 0;
+
+    int length = sq->length;
+    Point* pt = sq->point;
+    int px = pt->pos_x;
+    int py = pt->pos_y;
+
+
+    Shape* line1 = create_line_shape(px, py, px, py+length);
+    Pixel** line1Pixels = NULL;
+    pixel_line(line1, &line1Pixels, nb_pixels);
+
+    Shape* line2 = create_line_shape(px, py + length, px + length, py + length);
+    Pixel** line2Pixels = NULL;
+    pixel_line(line2, &line2Pixels, nb_pixels);
+
+
+    Shape* line3 = create_line_shape(px + length, py + length, px + length, py);
+    Pixel** line3Pixels = NULL;
+    pixel_line(line3, &line3Pixels, nb_pixels);
+
+    Shape* line4 = create_line_shape(px + length, py, px, py);
+    Pixel** line4Pixels = NULL;
+    pixel_line(line4, &line4Pixels, nb_pixels);
+
+    line1Pixels = realloc(line1Pixels, *nb_pixels * sizeof(Pixel*));
+
 }
 
 Pixel** create_shape_to_pixel(Shape* shape, int *nb_pixel) {
 
-    Pixel** pixel;
+    Pixel** pixel = NULL;
 
     switch (shape->shapeType) {
         case LINE:
