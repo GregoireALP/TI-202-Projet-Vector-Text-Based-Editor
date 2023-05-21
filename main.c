@@ -5,15 +5,17 @@
 
 int main() {
 
-    int nb_pixels = 0;
-    Area* area = create_area(10, 10);
-
-    Shape* line = create_rectangle_shape(4, 4, 5, 3);
-    add_shape_to_area(area, line);
-    draw_area(area);
-    print_area(area);
-
-
+    Area * draw_zone = create_area(12, 14);
+    Shape * shape1 = create_line_shape(5, 5 , 10, 10);
+    Shape * shape2 = create_circle_shape(5, 5, 4);
+    add_shape_to_area (draw_zone, shape1);
+    add_shape_to_area (draw_zone, shape2);
+    draw_area (draw_zone);
+    print_area (draw_zone);
+    erase_area (draw_zone);
+    draw_area (draw_zone);
+    print_area (draw_zone);
+    delete_area (draw_zone);
 
     return 0;
 }

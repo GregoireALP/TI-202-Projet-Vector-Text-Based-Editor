@@ -34,6 +34,8 @@ void print_area(Area* area);
 Pixel *create_pixel(int px, int py);
 Pixel** create_shape_to_pixel(Shape* shape, int *nb_pixel);
 void delete_pixel(Pixel *pixel);
+void delete_pixel_shape(Pixel*** pixel, int nb_pixels);
+
 
 void pixel_square(Shape* square, Pixel*** pixel_tab, int* nb_pixels);
 void pixel_rectangle(Shape* rectangle, Pixel*** pixel_tab, int* nb_pixels);
@@ -41,6 +43,7 @@ void pixel_polygon(Shape* polygon, Pixel*** pixel_tab, int* nb_pixels);
 void pixel_point(Shape* shape, Pixel*** pixel, int* nb_pixels);
 void pixel_line(Shape *shape, Pixel ***pixel_tab, int *nb_pixels);
 void pixel_circle(Shape* shape, Pixel*** pixel_tab, int *nb_pixels);
-void pixel_forme(Shape* shape, Pixel*** pixel_tab, int* nb_pixels);
+void pixel_form(Shape* shape, Pixel*** pixel_tab, int* nb_pixels);
+
 
 #endif //TI_202_PROJET_VECTOR_TEXT_BASED_EDITOR_AREA_H

@@ -91,6 +91,19 @@ void delete_pixel(Pixel *pixel) {
     free(pixel);
 }
 
+void delete_pixel_shape(Pixel*** pixel, int nb_pixels) {
+    if (*pixel == NULL) {
+        return;
+    }
+
+    for (int i = 0; i < nb_pixels; i++) {
+        free((*pixel)[i]);
+    }
+
+    free(*pixel);
+    *pixel = NULL;
+}
+
 void pixel_point(Shape* shape, Pixel*** pixel_tab, int* nb_pixels)
 {
     Point* pt = (Point*) shape->ptrShape;
