@@ -258,7 +258,61 @@ void pixel_line(Shape* shape, Pixel ***pixel_tab, int *nb_pixels) {
 }
 
 void pixel_circle(Shape* shape, Pixel*** pixel_tab, int *nb_pixels) {
-    
+    Circle *circle = (Circle *) shape -> ptrShape ;
+    int x = 0;
+    int y = circle->radius;
+    int d = circle->radius - 1;
+    Pixel *px = NULL;
+
+    while (y >= x) {
+        // Ajouter le point pour le premier octant
+        px = create_pixel(circle->center->pos_x + x, circle->center->pos_y + y);
+        pixel_tab[(*nb_pixels)++] = px;
+
+        // Ajouter le point pour l'octant d'en face
+        px = create_pixel(circle->center->pos_x + y, circle->center->pos_y + x);
+        pixel_tab[(*nb_pixels)++] = px;
+
+        // Ajouter la même chose pour les six octants restants
+
+        // Ajouter le point pour le second octant
+        px = create_pixel(circle->center->pos_x - x, circle->center->pos_y + y);
+        pixel_tab[(*nb_pixels)++] = px;
+
+        // Ajouter le point pour l'octant d'en face
+        px = create_pixel(circle->center->pos_x - y, circle->center->pos_y + x);
+        pixel_tab[(*nb_pixels)++] = px;
+
+        // Ajouter le point pour le troisième octant
+        px = create_pixel(circle->center->pos_x + x, circle->center->pos_y - y);
+        pixel_tab[(*nb_pixels)++] = px;
+
+        // Ajouter le point pour l'octant d'en face
+        px = create_pixel(circle->center->pos_x + y, circle->center->pos_y - x);
+        pixel_tab[(*nb_pixels)++] = px;
+
+        // Ajouter le point pour le dernier octant
+        px = create_pixel(circle->center->pos_x - x, circle->center->pos_y - y);
+        pixel_tab[(*nb_pixels)++] = px;
+
+        // Ajouter le point pour l'octant d'en face
+        px = create_pixel(circle->center->pos_x - y, circle->center->pos_y - x);
+        pixel_tab[(*nb_pixels)++] = px;
+
+        if (d >= 2 * x) {
+            d -= 2 * x + 1;
+            x++;
+        }
+        else if (d < 2 * (circle->radius - y)) {
+            d += 2 * y - 1;
+            y--;
+        }
+        else {
+            d += 2 * (y - x - 1);
+            y--;
+            x++;
+        }
+    }
 }
 
 Pixel** create_shape_to_pixel(Shape* shape, int *nb_pixel) {
