@@ -8,4 +8,4 @@
 int min(int a, int b);
 int max(int a, int b);
 
-#endif //TI_202_PROJET_VECTOR_TEXT_BASED_EDITOR_UTILS_H
+#endif // TI_202_PROJET_VECTOR_TEXT_BASED_EDITOR_UTILS_H

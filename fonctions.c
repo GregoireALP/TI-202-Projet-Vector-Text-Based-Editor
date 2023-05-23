@@ -4,7 +4,8 @@
 
 /********************************* POINT ******************************/
 
-Point *create_point(int px, int py) {
+Point *create_point(int px, int py)
+{
 
     Point *point = malloc(sizeof(Point));
 
@@ -14,17 +15,20 @@ Point *create_point(int px, int py) {
     return point;
 }
 
-void delete_point(Point *point) {
+void delete_point(Point *point)
+{
     free(point);
 }
 
-void print_point(Point *point) {
+void print_point(Point *point)
+{
     printf("POINT %d %d \n", point->pos_x, point->pos_y);
 }
 
 /********************************* LINE ******************************/
 
-Line *create_line(Point *point1, Point *point2) {
+Line *create_line(Point *point1, Point *point2)
+{
 
     Line *line = malloc(sizeof(Line));
 
@@ -34,17 +38,22 @@ Line *create_line(Point *point1, Point *point2) {
     return line;
 }
 
-void delete_line(Line *line) {
+void delete_line(Line *line)
+{
+    free(line->p1);
+    free(line->p2);
     free(line);
 }
 
-void print_line(Line *line) {
+void print_line(Line *line)
+{
     printf("LINE %d %d %d %d \n", line->p1->pos_x, line->p1->pos_y, line->p2->pos_x, line->p2->pos_y);
 }
 
 /********************************* SQUARE ******************************/
 
-Square *create_square(Point *point, int length) {
+Square *create_square(Point *point, int length)
+{
 
     Square *square = malloc(sizeof(Square));
 
@@ -54,17 +63,21 @@ Square *create_square(Point *point, int length) {
     return square;
 }
 
-void delete_square(Square *square) {
+void delete_square(Square *square)
+{
+    free(square->point);
     free(square);
 }
 
-void print_square(Square *square) {
+void print_square(Square *square)
+{
     printf("SQUARE %d %d %d", square->point->pos_x, square->point->pos_y, square->length);
 }
 
 /********************************* RECTANGLE ******************************/
 
-Rectangle *create_rectangle(Point *point, int width, int height) {
+Rectangle *create_rectangle(Point *point, int width, int height)
+{
 
     Rectangle *rectangle = malloc(sizeof(Rectangle));
 
@@ -75,18 +88,22 @@ Rectangle *create_rectangle(Point *point, int width, int height) {
     return rectangle;
 }
 
-void delete_rectangle(Rectangle *rectangle) {
+void delete_rectangle(Rectangle *rectangle)
+{
+    free(rectangle->point);
     free(rectangle);
 }
 
-void print_rectangle(Rectangle *rectangle) {
+void print_rectangle(Rectangle *rectangle)
+{
     printf("RECTANGLE %d %d %d %d", rectangle->point->pos_x, rectangle->point->pos_y, rectangle->width,
            rectangle->height);
 }
 
 /********************************* CIRCLE ******************************/
 
-Circle *create_circle(Point *center, int radius) {
+Circle *create_circle(Point *center, int radius)
+{
 
     Circle *circle = malloc(sizeof(Circle));
 
@@ -96,23 +113,28 @@ Circle *create_circle(Point *center, int radius) {
     return circle;
 }
 
-void delete_circle(Circle *circle) {
+void delete_circle(Circle *circle)
+{
+    free(circle->center);
     free(circle);
 }
 
-void print_circle(Circle *circle) {
+void print_circle(Circle *circle)
+{
     printf("CIRCLE %d %d %d", circle->center->pos_x, circle->center->pos_y, circle->radius);
 }
 
 /********************************* POLYGON ******************************/
 
-Polygon *create_polygon(int n, Point **points) {
+Polygon *create_polygon(int n, Point **points)
+{
 
     Polygon *polygon = malloc(sizeof(Polygon));
     Point **pointsTab = malloc(n * sizeof(Point));
 
     int i;
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < n; i++)
+    {
         pointsTab[i] = points[i];
     }
 
@@ -122,25 +144,34 @@ Polygon *create_polygon(int n, Point **points) {
     return polygon;
 }
 
-void delete_polygon(Polygon *polygon) {
+void delete_polygon(Polygon *polygon)
+{
+    for (int i = 0; i < polygon->n; i++)
+    {
+        free(polygon->points[i]);
+    }
+    free(polygon->points);
     free(polygon);
 }
 
-void print_polygon(Polygon *polygon) {
+void print_polygon(Polygon *polygon)
+{
 
     printf("POLYGON ");
 
     int i;
-    for (i = 0; i < polygon->n; i++) {
+    for (i = 0; i < polygon->n; i++)
+    {
         printf("%d %d \n", polygon->points[i]->pos_y, polygon->points[i]->pos_x);
     }
 }
 
 /********************************* SHAPE ******************************/
 
-Shape *create_empty_shape(SHAPE_TYPE shape_type) {
+Shape *create_empty_shape(SHAPE_TYPE shape_type)
+{
 
-    Shape *shape = (Shape *) malloc(sizeof(Shape));
+    Shape *shape = (Shape *)malloc(sizeof(Shape));
 
     shape->ptrShape = NULL;
     shape->id = get_next_id();
@@ -149,7 +180,8 @@ Shape *create_empty_shape(SHAPE_TYPE shape_type) {
     return shape;
 }
 
-Shape *create_point_shape(int px, int py) {
+Shape *create_point_shape(int px, int py)
+{
 
     Shape *shape = create_empty_shape(POINT);
     Point *point = create_point(px, py);
@@ -159,7 +191,8 @@ Shape *create_point_shape(int px, int py) {
     return shape;
 }
 
-Shape *create_line_shape(int px1, int py1, int px2, int py2) {
+Shape *create_line_shape(int px1, int py1, int px2, int py2)
+{
 
     Shape *shape = create_empty_shape(LINE);
 
@@ -173,7 +206,8 @@ Shape *create_line_shape(int px1, int py1, int px2, int py2) {
     return shape;
 }
 
-Shape *create_square_shape(int px, int py, int length) {
+Shape *create_square_shape(int px, int py, int length)
+{
 
     Shape *shape = create_empty_shape(SQUARE);
 
@@ -186,7 +220,8 @@ Shape *create_square_shape(int px, int py, int length) {
     return shape;
 }
 
-Shape *create_rectangle_shape(int px, int py, int width, int height) {
+Shape *create_rectangle_shape(int px, int py, int width, int height)
+{
 
     Shape *shape = create_empty_shape(RECTANGLE);
 
@@ -199,7 +234,8 @@ Shape *create_rectangle_shape(int px, int py, int width, int height) {
     return shape;
 }
 
-Shape *create_circle_shape(int px, int py, int radius) {
+Shape *create_circle_shape(int px, int py, int radius)
+{
 
     Shape *shape = create_empty_shape(CIRCLE);
 
@@ -212,63 +248,94 @@ Shape *create_circle_shape(int px, int py, int radius) {
     return shape;
 }
 
-Shape *create_polygon_shape(int lst[], int n) {
+Shape *create_polygon_shape(int lst[], int n)
+{
 
     Shape *shape = create_empty_shape(POLYGON);
 
     Point **points = malloc(n * sizeof(n));
 
     int i;
-    for (i = 0; i < n; i += 2) {
+    for (i = 0; i < n; i += 2)
+    {
         points[i] = create_point(lst[i], lst[i + 1]);
     }
 
-    if (n % 2 == 0) {
+    if (n % 2 == 0)
+    {
         Polygon *polygon = create_polygon(n, points);
 
         shape->ptrShape = polygon;
     }
     return shape;
-
 }
 
-void delete_shape(Shape *shape) {
+void delete_shape(Shape *shape)
+{
+    switch (shape->shapeType)
+    {
+
+    case POINT:
+        delete_point((Point *)shape->ptrShape);
+        break;
+    case LINE:
+        delete_line((Line *)shape->ptrShape);
+        break;
+    case SQUARE:
+        delete_square((Square *)shape->ptrShape);
+        break;
+    case RECTANGLE:
+        delete_rectangle((Rectangle *)shape->ptrShape);
+        break;
+    case CIRCLE:
+        delete_circle((Circle *)shape->ptrShape);
+        break;
+    case POLYGON:
+        delete_polygon((Polygon *)shape->ptrShape);
+        break;
+    default:
+        printf("UNKNOWN \n");
+        break;
+    }
+
     free(shape);
 }
 
-void print_shape(Shape *shape) {
+void print_shape(Shape *shape)
+{
 
-    switch (shape->shapeType) {
+    switch (shape->shapeType)
+    {
 
-        case POINT:
-            print_point((Point *) shape->ptrShape);
-            break;
-        case LINE:
-            print_line((Line *) shape->ptrShape);
-            break;
-        case SQUARE:
-            print_square((Square *) shape->ptrShape);
-            break;
-        case RECTANGLE:
-            print_rectangle((Rectangle *) shape->ptrShape);
-            break;
-        case CIRCLE:
-            print_circle((Circle *) shape->ptrShape);
-            break;
-        case POLYGON:
-            print_polygon((Polygon *) shape->ptrShape);
-            break;
-        default:
-            printf("UNKNOWN \n");
-            break;
+    case POINT:
+        print_point((Point *)shape->ptrShape);
+        break;
+    case LINE:
+        print_line((Line *)shape->ptrShape);
+        break;
+    case SQUARE:
+        print_square((Square *)shape->ptrShape);
+        break;
+    case RECTANGLE:
+        print_rectangle((Rectangle *)shape->ptrShape);
+        break;
+    case CIRCLE:
+        print_circle((Circle *)shape->ptrShape);
+        break;
+    case POLYGON:
+        print_polygon((Polygon *)shape->ptrShape);
+        break;
+    default:
+        printf("UNKNOWN \n");
+        break;
     }
-
 }
 
 /********************************* ID ******************************/
 
 unsigned int global_id = 0;
 
-unsigned int get_next_id() {
+unsigned int get_next_id()
+{
     return ++global_id;
 }

@@ -1,21 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "fonctions.h"
 #include "area.h"
+#include "command.h"
 
 int main() {
+    int state = 1;
+    char str[50];
 
-    Area * draw_zone = create_area(12, 14);
-    Shape * shape1 = create_line_shape(5, 5 , 10, 10);
-    Shape * shape2 = create_circle_shape(5, 5, 4);
-    add_shape_to_area (draw_zone, shape1);
-    add_shape_to_area (draw_zone, shape2);
-    draw_area (draw_zone);
-    print_area (draw_zone);
-    erase_area (draw_zone);
-    draw_area (draw_zone);
-    print_area (draw_zone);
-    delete_area (draw_zone);
+    // On Creer l'espace de depart
+    Area *area = create_area(10, 10);
+
+    while (state != 0) {
+        printf(">>>");
+        fgets(str, sizeof(str), stdin);
+
+        Command* cmd = create_command(str);
+
+        read_exec_command(cmd, &state, area);
+        free_command(cmd);
+    }
 
     return 0;
 }
