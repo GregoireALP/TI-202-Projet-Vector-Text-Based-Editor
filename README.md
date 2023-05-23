@@ -33,7 +33,7 @@ Si besoin de la liste de commande faire "help"
 
 Voici la liste : 
 
-clear : effacer la grille
+clear : effacer la console
 exit : quitter le programme
 help : afficher les commandes
 resize widht height : redimensionner l'aire en largeur longueur
@@ -74,7 +74,7 @@ Maintenant je souhaite effacer la grille mais je ne me souviens plus de la comma
 help
 
 Pour effacer la grille je sais donc que c'est :
-clear
+erase
 
 Enfin pour quitter le programme j'ecris :
 exit
