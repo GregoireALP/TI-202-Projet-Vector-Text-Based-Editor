@@ -71,6 +71,7 @@ int read_exec_command(Command* cmd, int *state, Area* area) {
         printf("- clear : effacer l’écran\n");
         printf("- exit : quitter le programme\n");
         printf("- point x y : ajouter un point\n");
+        printf("- resize width height : redimenssione la zone de dessin \n");
         printf("- line x1 y1 x2 y2 : ajouter un segment reliant deux points (x1, y1) et (x2, y2)\n");
         printf("- circle x y radius : ajouter un cercle de centre (x, y) et de rayon radius\n");
         printf("- square x y length : ajouter un carré dont le coin supérieur gauche est (x, y) et de côté length.\n");
@@ -91,13 +92,45 @@ int read_exec_command(Command* cmd, int *state, Area* area) {
 
         erase_area(area);
 
+    } else if(strcmp(cmd->name, "delete") == 0) {
+
+        int id = cmd->int_params[0];
+        area->nb_shape--;
+
+        for (int i = 0; i < area->nb_shape; ++i) {
+            if (area->shape[i]->id == id) {
+                delete_shape(area->shape[i]);
+                // Décalage des éléments suivants vers la gauche
+                for (int j = i; j < area->nb_shape; ++j) {
+                    area->shape[j] = area->shape[j + 1];
+                }
+                break;
+            }
+        }
+
     } else if(strcmp(cmd->name, "exit") == 0) {
 
         *state = 0;
 
+    } else if(strcmp(cmd->name, "resize") == 0) {
+
+        int width, height;
+        width = cmd->int_params[0];
+        height = cmd->int_params[0];
+
+        Shape** tmp = area->shape;
+        int tmpSize = area->nb_shape;
+
+        *area = *create_area(width, height);
+
+        for(int i = 0; i < tmpSize; i++) {
+            add_shape_to_area(area, tmp[i]);
+        }
+
     } else if(strcmp(cmd->name, "list") == 0) {
 
         for(int i = 0; i < area->nb_shape; i++) {
+            printf("(ID=%d)", area->shape[i]->id);
             print_shape(area->shape[i]);
             printf("\n");
         }
