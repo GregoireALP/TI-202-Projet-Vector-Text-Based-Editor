@@ -50,6 +50,7 @@ polygon x1 y1 x2 y2 ... : dessiner un polygon avec x1 y1 x2 y2 pour chaque segme
 
 
 ## Exemple
+Je vais créer un cercle avec le caractère '$' dans une aire que j'aurais redimensionnée
 
 Je lance le programme : 
 
