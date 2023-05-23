@@ -38,6 +38,10 @@ exit : quitter le programme
 help : afficher les commandes
 resize widht height : redimensionner l'aire en largeur longueur
 char c : choisir le caractère avec lequel on souhaite dessiner
+plot : rafraichir l'ecran pour afficher toutes les formes geometriques de l'image (en fonction des regles d'affichage)
+list : afficher la liste de l'ensemble des formes geometriques qui composent l'image ainsi que toutes leurs informations
+delete id : supprimer une forme a partir de son identifiant id
+erase : supprimer toutes les formes d'une image
 
 point px py : dessiner un point aux coordonnées (px, py)
 line x1 y1 x2 x2 : dessiner une ligne des coordonnées (x1, y1) à (x2, y2)
@@ -49,11 +53,13 @@ polygon x1 y1 x2 y2 ... : dessiner un polygon avec x1 y1 x2 y2 pour chaque segme
 
 
 
+
 ## Exemple
 
 Dans cette exemple je vais créer un cercle avec le caractère '$' dans une aire que j'aurais redimensionnée puis je vais effacer la grille avant de quitter le programme.
 
 Je lance le programme : 
+
 
 Je souhaite redimensionner l'aire en 40 par 30, j'écris dans le terminal :
 resize 40 30
