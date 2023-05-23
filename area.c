@@ -61,7 +61,7 @@ void delete_area(Area *area)
     free(area);
 }
 
-void print_area(Area *area)
+void print_area(Area *area, char c)
 {
 
     int i, y;
@@ -75,7 +75,7 @@ void print_area(Area *area)
             }
             else
             {
-                printf(" # ");
+                printf(" %c ", c);
             }
         }
         printf("\n");

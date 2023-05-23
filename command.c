@@ -65,32 +65,41 @@ void free_command(Command* cmd) {
 
 int read_exec_command(Command* cmd, int *state, Area* area) {
 
+    char drawPattern = '#';
+    char* pDrawPattern = &drawPattern;
+
     if (strcmp(cmd->name, "help") == 0) {
 
         // L'utilisateur tape la commande help
-        printf("- clear : effacer l’écran\n");
+        printf("- clear : effacer l'ecran\n");
         printf("- exit : quitter le programme\n");
+        printf("- char c : change le caractere d'affichage\n");
         printf("- point x y : ajouter un point\n");
         printf("- resize width height : redimenssione la zone de dessin \n");
         printf("- line x1 y1 x2 y2 : ajouter un segment reliant deux points (x1, y1) et (x2, y2)\n");
         printf("- circle x y radius : ajouter un cercle de centre (x, y) et de rayon radius\n");
-        printf("- square x y length : ajouter un carré dont le coin supérieur gauche est (x, y) et de côté length.\n");
-        printf("- rectangle x y width height : ajouter un rectangle dont le coin supérieur gauche est (x, y), de largeur width et de longueur height\n");
-        printf("- polygon x1 y1 x2 y2 x3 y3 ... ... : ajouter un polygone avec la liste des points donnés\n");
-        printf("- plot : rafraîchir l’écran pour afficher toutes les formes géométriques de l’image (en fonction des règles d’affichage\n");
-        printf("- list : afficher la liste de l’ensemble des formes géométriques qui composent l’image ainsi que toutes leurs informations\n");
-        printf("- delete id : supprimer une forme à partir de son identifiant id.\n");
+        printf("- square x y length : ajouter un carre dont le coin superieur gauche est (x, y) et de coteh length.\n");
+        printf("- rectangle x y width height : ajouter un rectangle dont le coin superieur gauche est (x, y), de largeur width et de longueur height\n");
+        printf("- polygon x1 y1 x2 y2 x3 y3 ... ... : ajouter un polygone avec la liste des points donnes\n");
+        printf("- plot : rafraichir l'ecran pour afficher toutes les formes geometriques de l'image (en fonction des regles d'affichage\n");
+        printf("- list : afficher la liste de l'ensemble des formes geometriques qui composent l'image ainsi que toutes leurs informations\n");
+        printf("- delete id : supprimer une forme a partir de son identifiant id.\n");
         printf("- erase : supprimer toutes les formes d’une image.\n");
-        printf("- help : afficher la liste des commandes ainsi qu’un mini mode d’emploi permettant à l’utilisateur d’utiliser les commandes correctement\n");
+        printf("- help : afficher la liste des commandes ainsi qu'un mini mode d'emploi permettant a l'utilisateur d'utiliser les commandes correctement\n");
 
     } else if(strcmp(cmd->name, "plot") == 0) {
 
         draw_area(area);
-        print_area(area);
+        print_area(area, *pDrawPattern);
 
     } else if(strcmp(cmd->name, "erase") == 0) {
 
         erase_area(area);
+
+    } else if(strcmp(cmd->name, "char") == 0) {
+
+        char elem = cmd->str_params[0][0];
+        *pDrawPattern = elem;
 
     } else if(strcmp(cmd->name, "delete") == 0) {
 

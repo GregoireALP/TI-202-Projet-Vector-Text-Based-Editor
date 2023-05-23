@@ -31,7 +31,7 @@ void clear_area(Area *area);
 void erase_area(Area *area);
 void delete_area(Area *area);
 void draw_area(Area *area);
-void print_area(Area *area);
+void print_area(Area *area, char c);
 
 Pixel *create_pixel(int px, int py);
 Pixel **create_shape_to_pixel(Shape *shape, int *nb_pixel);
