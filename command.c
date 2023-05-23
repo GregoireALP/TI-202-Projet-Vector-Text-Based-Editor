@@ -58,8 +58,6 @@ Command* create_command(char str[50]) {
     return cmd;
 }
 
-
-
 void free_command(Command* cmd) {
     // Libérer la commande elle-même
     free(cmd);
@@ -92,6 +90,17 @@ int read_exec_command(Command* cmd, int *state, Area* area) {
     } else if(strcmp(cmd->name, "erase") == 0) {
 
         erase_area(area);
+
+    } else if(strcmp(cmd->name, "exit") == 0) {
+
+        *state = 0;
+
+    } else if(strcmp(cmd->name, "list") == 0) {
+
+        for(int i = 0; i < area->nb_shape; i++) {
+            print_shape(area->shape[i]);
+            printf("\n");
+        }
 
     } else if(strcmp(cmd->name, "point") == 0) {
 
@@ -143,6 +152,8 @@ int read_exec_command(Command* cmd, int *state, Area* area) {
         Shape* rectangke = create_rectangle_shape(x, y, w, h);
         add_shape_to_area(area, rectangke);
 
+    } else {
+        printf("Desoler mais cette commande est inconnue, tapez help pour plus d'informations\n");
     }
     return 0;
 }

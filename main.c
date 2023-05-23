@@ -9,7 +9,6 @@ int main() {
     int state = 1;
     char str[50];
 
-    // On Creer l'espace de depart
     Area *area = create_area(10, 10);
 
     while (state != 0) {

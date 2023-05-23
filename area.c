@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/********************************* AREA ******************************/
+
 Area *create_area(unsigned int width, unsigned int height)
 {
 
@@ -28,6 +30,7 @@ void add_shape_to_area(Area *area, Shape *shape)
 
     area->shape[area->nb_shape] = shape;
     area->nb_shape++;
+    shape->id = area->nb_shape;
 }
 
 void erase_area(Area *area)
@@ -101,7 +104,8 @@ void draw_area(Area *area)
     }
 }
 
-/**************************************************************/
+/********************************* PIXEL ******************************/
+
 Pixel *create_pixel(int px, int py)
 {
 
