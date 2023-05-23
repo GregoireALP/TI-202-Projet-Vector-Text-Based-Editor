@@ -36,7 +36,7 @@ void erase_area(Area *area)
     int i, y;
     for (i = 0; i < area->height; i++)
     {
-        for (y = 0; y < area->width; i++)
+        for (y = 0; y < area->width; y++)
         {
             area->mat[i][y] = 0;
         }

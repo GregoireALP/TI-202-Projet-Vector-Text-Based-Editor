@@ -84,19 +84,65 @@ int read_exec_command(Command* cmd, int *state, Area* area) {
         printf("- erase : supprimer toutes les formes d’une image.\n");
         printf("- help : afficher la liste des commandes ainsi qu’un mini mode d’emploi permettant à l’utilisateur d’utiliser les commandes correctement\n");
 
-    } else if(strcmp(cmd->name, "point") == 0) {
-
-        int x = cmd->int_params[0];
-        int y = cmd->int_params[1];
-
-        Shape *point = create_point_shape(x, y);
-        add_shape_to_area(area, point);
-
     } else if(strcmp(cmd->name, "plot") == 0) {
-        printf("ici");
+
         draw_area(area);
         print_area(area);
-    }
 
+    } else if(strcmp(cmd->name, "erase") == 0) {
+
+        erase_area(area);
+
+    } else if(strcmp(cmd->name, "point") == 0) {
+
+            int x = cmd->int_params[0];
+            int y = cmd->int_params[1];
+
+            Shape *point = create_point_shape(x, y);
+            add_shape_to_area(area, point);
+
+    } else if(strcmp(cmd->name, "line") == 0) {
+
+        int x1, x2, y1, y2;
+        x1 = cmd->int_params[0];
+        y1 = cmd->int_params[1];
+        x2 = cmd->int_params[2];
+        y2 = cmd->int_params[3];
+
+        Shape *line= create_line_shape(x1, y1, x2, y2);
+        add_shape_to_area(area, line);
+
+    } else if(strcmp(cmd->name, "circle") == 0) {
+
+        int x, y, rad;
+        x = cmd->int_params[0];
+        y = cmd->int_params[1];
+        rad = cmd->int_params[2];
+
+        Shape* circle = create_circle_shape(x, y, rad);
+        add_shape_to_area(area, circle);
+
+    } else if(strcmp(cmd->name, "square") == 0) {
+
+        int x, y, l;
+        x = cmd->int_params[0];
+        y = cmd->int_params[1];
+        l = cmd->int_params[2];
+
+        Shape* square = create_square_shape(x, y, l);
+        add_shape_to_area(area, square);
+
+    } else if(strcmp(cmd->name, "rectangle") == 0) {
+
+        int x, y, w, h;
+        x = cmd->int_params[0];
+        y = cmd->int_params[1];
+        w = cmd->int_params[2];
+        h = cmd->int_params[3];
+
+        Shape* rectangke = create_rectangle_shape(x, y, w, h);
+        add_shape_to_area(area, rectangke);
+
+    }
     return 0;
 }
